@@ -69,15 +69,6 @@ struct TpUnidade{
 };
 typedef struct TpUnidade TpUnidade;
 
-pDados* CriaNoDados(TpDados dados)
-{
-	pDados *NC;
-	NC = (pDados*)malloc(sizeof(pDados));
-	NC->dados = dados;
-	NC->prox = NULL;
-	
-	return NC;
-}
 TpCampos* CriaNoCampos(int dec, int width, char fieldName[], char type)
 {
 	TpCampos *NC;
@@ -514,7 +505,7 @@ void TelaDeleteALL(TpUnidade *L, TpArquivo *arqs, int deletados)
 	gotoxy(40,3), printf("\033[1m====================================\033[0m");
 	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
 	gotoxy(40,7), printf("\033[1m====================================\033[0m");
-	gotoxy(6, 8), printf (". DELETE");
+	gotoxy(6, 8), printf (". DELETE ALL");
 	gotoxy(12,9), printf ("%d records deleted", deletados);
 	gotoxy(64,26), printf("ENTER - SAIR");
 	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
@@ -527,8 +518,58 @@ void TelaDeleteALL(TpUnidade *L, TpArquivo *arqs, int deletados)
 		status = status->prox;
 		cont++;
 	}
-	gotoxy(6,28), textcolor(7),printf ("DELETE\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF, cont);
+	gotoxy(6,28), textcolor(7),printf ("DELETE ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF, cont);
 	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
+}
+void TelaRecall(TpUnidade *L, TpArquivo *arqs, int pos)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("\033[1m====================================\033[0m");
+	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
+	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(6, 8), printf (". RECALL");
+	gotoxy(12,9), printf ("1 records recalled");
+	gotoxy(64,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
+
+	int cont = 0;
+	TpStatus *status;
+	status = arqs->status;
+	while(status != NULL)
+	{
+		status = status->prox;
+		cont++;
+	}
+	gotoxy(6,28), textcolor(7),printf ("RECALL\t\t||<%s>||%s\t\t||Rec: %d/%d", L->und, arqs->nomeDBF, pos,cont);
+	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
+	
+	
+	
+}
+void TelaRecallALL(TpUnidade *L, TpArquivo *arqs, int ativados)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("\033[1m====================================\033[0m");
+	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
+	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(6, 8), printf (". RECALL ALL");
+	gotoxy(12,9), printf ("%d records recalled", ativados);
+	gotoxy(64,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
+
+	int cont = 0;
+	TpStatus *status;
+	status = arqs->status;
+	while(status != NULL)
+	{
+		status = status->prox;
+		cont++;
+	}
+	gotoxy(6,28), textcolor(7),printf ("RECALL ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF,cont);
+	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
+	
+	
+	
 }
 void alimentarUnidade(TpUnidade **L)
 {
@@ -999,7 +1040,7 @@ void append(TpUnidade *L, TpArquivo **arqs)
 	
 	
 }
-void list(TpUnidade *L, TpArquivo *arqs)
+void list(TpUnidade *L, TpArquivo *arqs, char set)
 {
 	clrscr();
 	TelaList(L, arqs);
@@ -1011,7 +1052,7 @@ void list(TpUnidade *L, TpArquivo *arqs)
 	int i = 0, j = 0, k = 0, pos = 0;
 	while(status != NULL)
 	{
-		if (status->status == 1) // true
+		if (status->status == 1 || set == 0) // true
 		{
 			campos = arqs->campos;
 			while(campos != NULL)
@@ -1061,7 +1102,7 @@ void list(TpUnidade *L, TpArquivo *arqs)
 	
 	getch();
 }
- void listfor(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[])
+ void listfor(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[], char set)
 {
 
 	TpCampos *auxCampos, *campos;
@@ -1080,7 +1121,7 @@ void list(TpUnidade *L, TpArquivo *arqs)
 		p = auxCampos->pAtual;
 		while(status != NULL && p != NULL)
 		{
-			if (status->status == 1)
+			if (status->status == 1 || set == 0)
 			{
 				
 				if(auxCampos->type == 'C')
@@ -1202,7 +1243,7 @@ void list(TpUnidade *L, TpArquivo *arqs)
 	}
 	
 }
-void locate(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[])
+void locate(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[], char set)
 {
 	TpCampos *campos;
 	TpStatus *status;
@@ -1219,7 +1260,7 @@ void locate(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[])
 		while(status != NULL && flag != 1)
 		{
 			
-			if (status->status == 1)
+			if (status->status == 1 || set == 0)
 			{
 				
 				if(campos->type == 'C')
@@ -1313,7 +1354,7 @@ void goTo(TpUnidade *L, TpArquivo *arqs, char aux[], int *reg)
 		getch();
 	}
 }
-void display(TpUnidade *L,TpArquivo *arqs, int pos)
+void display(TpUnidade *L,TpArquivo *arqs, int pos, char set)
 {
 	
 	TpStatus *status;
@@ -1327,7 +1368,7 @@ void display(TpUnidade *L,TpArquivo *arqs, int pos)
 		status = status->prox;
 		
 	}
-	if (status != NULL && status->status == 1)
+	if (status != NULL && (status->status == 1 || set == 0))
 	{
 		clrscr();
 		TelaDisplay(L, arqs, pos);
@@ -1540,7 +1581,56 @@ void deleteALL(TpUnidade *L, TpArquivo *arqs, int *pos)
 	getch();
 	
 }
-void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, char *op, TpArquivo **arqs, int *reg)
+void recall(TpUnidade *L, TpArquivo *arqs, int pos)
+{
+	
+	TpStatus *status;
+	int i = 0;
+	status = arqs->status;
+	while(status != NULL && i < pos - 1)
+	{
+		status = status->prox;
+		i++;
+	}
+	if (status != NULL && status->status == 0)
+	{
+		clrscr();
+		TelaRecall(L, arqs, pos);
+		status->status = 1;
+		
+	}
+	else
+	{
+		gotoxy(6,10), printf ("Registro Ja Ativado");
+	}
+	getch();
+	
+	
+}
+void recallALL(TpUnidade *L, TpArquivo *arqs, int *pos)
+{
+	
+	TpStatus *status;
+	status = arqs->status;
+	int ativados = 0;
+	while(status != NULL)
+	{
+		if (status->status == 0)
+		{
+			status->status = 1;
+			ativados++;
+		}
+		
+		status = status->prox;
+		
+	}
+	*pos = 0;
+	clrscr();
+	TelaRecallALL(L, arqs, ativados);
+	getch();
+	
+}
+void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, char *op, TpArquivo **arqs, int *reg, char *set)
 {
 	int i=0 , j = 0;
 	char aux[15], flag, campo[15], registro[15];
@@ -1789,7 +1879,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 		{
 			
 			if (*arqs != NULL)
-				list(*atual,*arqs);
+				list(*atual,*arqs, *set);
 			else
 				{
 					gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
@@ -1838,7 +1928,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 								if (strcmp(registro, "") != 0 && strcmp(campo, "") != 0)
 								{
 									if (*arqs != NULL) 
-										listfor(*atual, *arqs, campo, registro);
+										listfor(*atual, *arqs, campo, registro, *set);
 									else
 									{
 										gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
@@ -1902,7 +1992,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 								if (strcmp(registro, "") != 0 && strcmp(campo, "") != 0)
 								{
 									if (*arqs != NULL) 
-										locate(*atual, *arqs, campo, registro);
+										locate(*atual, *arqs, campo, registro, *set);
 									else
 									{
 										gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
@@ -1966,7 +2056,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			if (frase[i] == '\0')
 			{
 				if (*reg != 0)
-				display(*atual,*arqs, *reg);
+				display(*atual,*arqs, *reg, *set);
 				else
 					{
 						gotoxy(6,10), printf ("Nenhum Registro Selecionado e/ou Arquivo Selecionado");
@@ -2020,11 +2110,11 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			i++;
 			if (frase[i] == '\0')
 			{
-				if (*arqs != NULL && (*arqs)->status != NULL)
+				if (*arqs != NULL)
 					deleteALL(*atual,*arqs, reg);
 				else
 					{
-						gotoxy(6,10), printf ("Nenhum Registro p/ Deletar e/ou Arquivo Selecionado");
+						gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
 						getch();
 					}
 					
@@ -2032,9 +2122,88 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			}
 		}
 		else
+		if(strcmp(aux, "RECALL") == 0 && frase[i + 1] == '\0')
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if (*reg != 0)
+					recall(*atual,*arqs, *reg);
+				else
+					{
+						gotoxy(6,10), printf ("Nenhum Registro Selecionado e/ou Arquivo Selecionado");
+						getch();
+					}
+					
+				flag = 1;
+			}
+			
+		}
+		else
+		if(strcmp(aux, "RECALL ALL") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if (*set == 0 && (*arqs) != NULL)
+					recallALL(*atual,*arqs, reg);
+				else
+					{
+						gotoxy(6,10), printf ("Illegal Command");
+						getch();
+					}
+					
+				flag = 1;
+			}
+			
+			
+		}
+		else
+		if(strcmp(aux, "SET DELETED OFF") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if(*set != 0)
+				{
+					gotoxy(6,10), printf("Desativado");
+					*set = 0;
+				}
+				else
+				{
+					gotoxy(6,10), printf("Ja Desativado");
+				}
+				getch();
+				flag = 1;
+			}
+			
+		}
+		else
+		if(strcmp(aux,"SET DELETED ON") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if(*set != 1)
+				{
+					gotoxy(6,10), printf("Ativado");
+					*set = 1;
+				}
+				else
+				{
+					gotoxy(6,10), printf("Ja Ativado");
+					
+				}
+				getch();
+				flag = 1;
+			}
+			
+		}
+		else
 		{
 		 	flag =0;
 		}
+		
 		
 		j++;
 		i++;
@@ -2051,7 +2220,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 
 void executar(void)
 {
-	char op, frase[50];
+	char op, frase[50], set = 1;
 	int reg = 0; 
 	TpArquivo *arqs = NULL;
 	TpUnidade *Lista, *atual;
@@ -2099,7 +2268,7 @@ void executar(void)
 		gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
 		fflush(stdin);
 		gotoxy(6,26),gets(frase);
-		interpretarString(frase, &Lista, &atual, &op, &arqs, &reg);
+		interpretarString(frase, &Lista, &atual, &op, &arqs, &reg, &set);
 	
 	}while(op != 27);
 }
