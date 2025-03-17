@@ -10,12 +10,12 @@ struct my_tm
     int tm_sec;   // Indica os segundos de 0 a 59
     int tm_min;   // Indica os minutos de 0 a 59
     int tm_hour;  // Indica as horas de 0 a 24
-    int tm_mday;  // Indica os dias do mês de 1 a 31
+    int tm_mday;  // Indica os dias do mï¿½s de 1 a 31
     int tm_mon;   // Indica os meses do ano de 0 a 11
     int tm_year;  // Indica o ano a partir de 1900
-    int tm_wday;  // Indica o dia da semana de 0 (domingo) até 6 (sábado)
+    int tm_wday;  // Indica o dia da semana de 0 (domingo) atï¿½ 6 (sï¿½bado)
     int tm_yday;  // Indica o dia do ano de 1 a 365
-    int tm_isdst; // Indica o horário de verão se for diferente de zero
+    int tm_isdst; // Indica o horï¿½rio de verï¿½o se for diferente de zero
 };
 union TpDados
 {
@@ -144,9 +144,9 @@ void Moldura(int CI, int LI, int CF, int LF, int CorTxt, int CorFundo)
 void TelaCreate(TpUnidade *atual, TpArquivo *arq)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6,10),printf ("Field Name");
 	gotoxy(20,10), printf ("Type");
 	gotoxy(34,10), printf("Width");
@@ -161,9 +161,9 @@ void TelaCreate(TpUnidade *atual, TpArquivo *arq)
 void TelaDir(TpUnidade *atual)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6,10),printf (". DIR");
 	gotoxy(6,12), printf ("Database Files");
 	gotoxy(24,12), printf("# Records");
@@ -177,9 +177,9 @@ void TelaDir(TpUnidade *atual)
 void TelaListStructure(TpUnidade *atual,TpArquivo *arqs)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6,8),printf (". LIST STRUCTURE");
 	gotoxy(6,10), printf ("Structure for database: %s%s", atual->und, arqs->nomeDBF);
 	if (arqs->status == NULL)
@@ -227,9 +227,9 @@ void TelaListStructure(TpUnidade *atual,TpArquivo *arqs)
 void TelaAppend(TpUnidade *L, TpArquivo *arqs)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	int i = 0;
 	TpCampos *auxCampos;
 	auxCampos = arqs->campos;
@@ -250,9 +250,9 @@ void TelaAppend(TpUnidade *L, TpArquivo *arqs)
 void TelaList(TpUnidade *L, TpArquivo *arqs)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". LIST");
 	gotoxy(6,10), printf("Record#");
 	int i = 0;
@@ -289,9 +289,9 @@ void TelaList(TpUnidade *L, TpArquivo *arqs)
 void TelaListFor(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[])
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". LIST FOR %s = \"%s\"", campo, registro);
 	gotoxy(6,10), printf("Record#");
 	int i = 0;
@@ -330,9 +330,9 @@ void TelaListFor(TpUnidade *L, TpArquivo *arqs, char campo[], char registro[])
 void TelaLocate(TpUnidade *L, TpArquivo *arqs,char campo[], char registro[], int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". LOCATE FOR %s = \"%s\"", campo, registro);
 	gotoxy(6,10), printf("Record =\t\t%d", pos);
 
@@ -361,9 +361,9 @@ void TelaLocate(TpUnidade *L, TpArquivo *arqs,char campo[], char registro[], int
 void TelaGoTo(TpUnidade *L, TpArquivo *arqs,int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". GOTO %d", pos);
 	gotoxy(64,26), printf("ENTER - SAIR");
 	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
@@ -383,9 +383,9 @@ void TelaGoTo(TpUnidade *L, TpArquivo *arqs,int pos)
 void TelaDisplay(TpUnidade *L, TpArquivo *arqs, int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". DISPLAY");
 	gotoxy(6,10), printf("Record#");
 	int i = 0;
@@ -421,9 +421,9 @@ void TelaDisplay(TpUnidade *L, TpArquivo *arqs, int pos)
 void TelaEdit(TpUnidade *L, TpArquivo *arqs, int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	int i = 0, j =0;
 	TpCampos *auxCampos;
 	auxCampos = arqs->campos;
@@ -480,9 +480,9 @@ void TelaEdit(TpUnidade *L, TpArquivo *arqs, int pos)
 void TelaDelete(TpUnidade *L, TpArquivo *arqs, int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". DELETE");
 	gotoxy(12,9), printf ("1 record deleted");
 	gotoxy(64,26), printf("ENTER - SAIR");
@@ -502,9 +502,9 @@ void TelaDelete(TpUnidade *L, TpArquivo *arqs, int pos)
 void TelaDeleteALL(TpUnidade *L, TpArquivo *arqs, int deletados)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". DELETE ALL");
 	gotoxy(12,9), printf ("%d records deleted", deletados);
 	gotoxy(64,26), printf("ENTER - SAIR");
@@ -524,9 +524,9 @@ void TelaDeleteALL(TpUnidade *L, TpArquivo *arqs, int deletados)
 void TelaRecall(TpUnidade *L, TpArquivo *arqs, int pos)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". RECALL");
 	gotoxy(12,9), printf ("1 records recalled");
 	gotoxy(64,26), printf("ENTER - SAIR");
@@ -549,9 +549,9 @@ void TelaRecall(TpUnidade *L, TpArquivo *arqs, int pos)
 void TelaRecallALL(TpUnidade *L, TpArquivo *arqs, int ativados)
 {
 	Moldura(1,1, 120,30, 7, 7);
-	gotoxy(40,3), printf("\033[1m====================================\033[0m");
-	gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-	gotoxy(40,7), printf("\033[1m====================================\033[0m");
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
 	gotoxy(6, 8), printf (". RECALL ALL");
 	gotoxy(12,9), printf ("%d records recalled", ativados);
 	gotoxy(64,26), printf("ENTER - SAIR");
@@ -1630,6 +1630,86 @@ void recallALL(TpUnidade *L, TpArquivo *arqs, int *pos)
 	getch();
 	
 }
+void pack(TpUnidade *L, TpArquivo **arqs)
+{
+	TpStatus *status, *antStatus, *aux;
+	TpCampos *campos;
+	pDados *p, *ant;
+	int i, pos = 0;
+	status = (*arqs)->status;
+	while(status != NULL)
+	{
+		
+		if (status->status == 0)
+		{
+			campos = (*arqs)->campos;
+			while(campos != NULL)
+			{
+				
+				if (pos == 0)
+				{
+					p = campos->pAtual;
+					campos->pAtual = campos->pAtual->prox;
+					free(p);
+					
+				}
+				else
+				{
+					p = campos->pAtual;
+					i = 0;
+					while(p != NULL && i < pos)
+					{
+						ant = p;
+						p = p->prox;
+						i++;
+					}
+					if(p != NULL)
+					{
+						ant->prox = p->prox;		
+						free(p);
+						
+					}
+				
+				}
+				
+				
+				
+				campos = campos->prox;
+			}
+			aux = status; 
+			if (pos == 0) // primeiro caso
+			{
+				(*arqs)->status = status->prox;
+				
+			}
+			else
+			{
+				antStatus->prox = status->prox;	
+				
+			}
+			
+			free(aux);
+		}
+		else
+		{
+			antStatus = status; // para nï¿½o pegar lixo	
+			pos++; // so incrementa se n deletar
+		}
+		
+		status = status->prox;
+		
+		
+		
+		
+		
+	
+	}
+	
+	
+	
+	
+	
+}
 void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, char *op, TpArquivo **arqs, int *reg, char *set)
 {
 	int i=0 , j = 0;
@@ -2200,6 +2280,24 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			
 		}
 		else
+		if(strcmp(aux, "PACK") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if ((*arqs) != NULL)
+					pack(*atual, arqs);
+				else
+					{
+						gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
+						getch();
+					}
+					
+				flag = 1;
+			}
+			
+		}
+		else
 		{
 		 	flag =0;
 		}
@@ -2233,9 +2331,9 @@ void executar(void)
 		Moldura(1,1, 120,30, 7, 7);
 		
 		//Moldura(45, 4, 67, 6, 15, 7);
-		gotoxy(40,3), printf("\033[1m====================================\033[0m");
-		gotoxy(50,5), textcolor(7),printf ("\033[1;4mdBase Dinamico\033[0m");
-		gotoxy(40,7), printf("\033[1m====================================\033[0m");
+		gotoxy(40,3), printf("====================================");
+		gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+		gotoxy(40,7), printf("====================================");
 		if (atual == NULL)
 		{
 			atual = Lista;
