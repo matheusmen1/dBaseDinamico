@@ -6,16 +6,13 @@
 #include <time.h>
 #include <conio2.h>
 struct my_tm 
-{
-    int tm_sec;   // Indica os segundos de 0 a 59
-    int tm_min;   // Indica os minutos de 0 a 59
-    int tm_hour;  // Indica as horas de 0 a 24
-    int tm_mday;  // Indica os dias do m�s de 1 a 31
-    int tm_mon;   // Indica os meses do ano de 0 a 11
-    int tm_year;  // Indica o ano a partir de 1900
-    int tm_wday;  // Indica o dia da semana de 0 (domingo) at� 6 (s�bado)
-    int tm_yday;  // Indica o dia do ano de 1 a 365
-    int tm_isdst; // Indica o hor�rio de ver�o se for diferente de zero
+{  
+    int tm_min;  
+    int tm_hour;  
+    int tm_mday;  
+    int tm_mon;   
+    int tm_year; 
+  
 };
 union TpDados
 {
@@ -153,10 +150,10 @@ void TelaCreate(TpUnidade *atual, TpArquivo *arq)
 	gotoxy(46,10), printf ("Dec");
 	gotoxy(6,12), printf ("===========================================");
 	
-	gotoxy(35,26), printf("ENTER - SAIR");
-	gotoxy(6,27), textcolor(7),printf("-----------------------------------------");
+	gotoxy(59,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("-----------------------------------------------------------------");
 	gotoxy(6,28), textcolor(7),printf ("CREATE\t\t||<%s>||%s", atual->und, arq->nomeDBF);
-	gotoxy(6,29), textcolor(7),printf("-----------------------------------------");
+	gotoxy(6,29), textcolor(7),printf("-----------------------------------------------------------------");
 }
 void TelaDir(TpUnidade *atual)
 {
@@ -169,10 +166,10 @@ void TelaDir(TpUnidade *atual)
 	gotoxy(24,12), printf("# Records");
 	gotoxy(38,12), printf ("Last Update");
 	
-	gotoxy(35,26), printf("ENTER - SAIR");
-	gotoxy(6,27), textcolor(7),printf("-----------------------------------------");
+	gotoxy(59,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("-----------------------------------------------------------------");
 	gotoxy(6,28), textcolor(7),printf ("DIR\t\t||<%s>||", atual->und);
-	gotoxy(6,29), textcolor(7),printf("-----------------------------------------");
+	gotoxy(6,29), textcolor(7),printf("-----------------------------------------------------------------");
 }
 void TelaListStructure(TpUnidade *atual,TpArquivo *arqs)
 {
@@ -242,10 +239,10 @@ void TelaAppend(TpUnidade *L, TpArquivo *arqs)
 	}
 	
 	
-	gotoxy(35,26), printf("ENTER - SAIR");
-	gotoxy(6,27), textcolor(7),printf("-----------------------------------------");
+	gotoxy(59,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("-----------------------------------------------------------------");
 	gotoxy(6,28), textcolor(7),printf ("APPEND\t\t||<%s>||%s", L->und, arqs->nomeDBF);
-	gotoxy(6,29), textcolor(7),printf("-----------------------------------------");
+	gotoxy(6,29), textcolor(7),printf("-----------------------------------------------------------------");
 }
 void TelaList(TpUnidade *L, TpArquivo *arqs)
 {
@@ -510,15 +507,7 @@ void TelaDeleteALL(TpUnidade *L, TpArquivo *arqs, int deletados)
 	gotoxy(64,26), printf("ENTER - SAIR");
 	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
 
-	int cont = 0;
-	TpStatus *status;
-	status = arqs->status;
-	while(status != NULL)
-	{
-		status = status->prox;
-		cont++;
-	}
-	gotoxy(6,28), textcolor(7),printf ("DELETE ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF, cont);
+	gotoxy(6,28), textcolor(7),printf ("DELETE ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF, deletados);
 	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
 }
 void TelaRecall(TpUnidade *L, TpArquivo *arqs, int pos)
@@ -543,8 +532,6 @@ void TelaRecall(TpUnidade *L, TpArquivo *arqs, int pos)
 	gotoxy(6,28), textcolor(7),printf ("RECALL\t\t||<%s>||%s\t\t||Rec: %d/%d", L->und, arqs->nomeDBF, pos,cont);
 	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
 	
-	
-	
 }
 void TelaRecallALL(TpUnidade *L, TpArquivo *arqs, int ativados)
 {
@@ -557,18 +544,106 @@ void TelaRecallALL(TpUnidade *L, TpArquivo *arqs, int ativados)
 	gotoxy(64,26), printf("ENTER - SAIR");
 	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
 
-	int cont = 0;
-	TpStatus *status;
-	status = arqs->status;
-	while(status != NULL)
-	{
-		status = status->prox;
-		cont++;
-	}
-	gotoxy(6,28), textcolor(7),printf ("RECALL ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF,cont);
+	gotoxy(6,28), textcolor(7),printf ("RECALL ALL\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF,ativados);
+	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
+
+}
+void TelaPack(TpUnidade *L, TpArquivo *arqs, int excluidos)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
+	gotoxy(6, 8), printf (". PACK");
+	gotoxy(12,9), printf ("%d records deleted ""physically""", excluidos);
+	gotoxy(64,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
+
+	gotoxy(6,28), textcolor(7),printf ("PACK\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF,excluidos);
+	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
+	
+}
+void TelaZap(TpUnidade *L, TpArquivo *arqs, int excluidos)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
+	gotoxy(6, 8), printf (". ZAP");
+	gotoxy(12,9), printf ("%d records deleted ""physically""", excluidos);
+	gotoxy(64,26), printf("ENTER - SAIR");
+	gotoxy(6,27), textcolor(7),printf("----------------------------------------------------------------------");
+
+	gotoxy(6,28), textcolor(7),printf ("ZAP\t\t||<%s>||%s\t\t||Rec: EOF/%d", L->und, arqs->nomeDBF,excluidos);
 	gotoxy(6,29), textcolor(7), printf("----------------------------------------------------------------------");
 	
 	
+	
+}
+void TelaModifyStructure(TpUnidade *L, TpArquivo *arqs, int *pos)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
+
+	gotoxy(6,10),printf ("Field Name");
+	gotoxy(20,10), printf ("Type");
+	gotoxy(34,10), printf("Width");
+	gotoxy(46,10), printf ("Dec");
+	gotoxy(6,12), printf ("===========================================");
+
+	TpCampos *campos;
+	campos = arqs->campos;
+	while(campos != NULL)
+	{
+		gotoxy(4, 14+ *pos), printf("%d", *pos + 1);
+		gotoxy(6, 14+ *pos ), printf ("%s", campos->fieldName);
+		gotoxy(20, 14+ *pos), printf ("%c", campos->type);
+		gotoxy(34, 14+ *pos), printf ("%d", campos->width);
+		gotoxy(46, 14+ *pos), printf ("%d", campos->dec);
+		campos = campos->prox;
+		
+		*pos = *pos + 1;
+	}
+	gotoxy(6,27), textcolor(7),printf("-----------------------------------------------------------------");
+	gotoxy(6,28), textcolor(7),printf ("MODIFY STRUCTURE\t\t||<%s>||%s", L->und, arqs->nomeDBF);
+	gotoxy(6,29), textcolor(7),printf("-----------------------------------------------------------------");
+	
+}
+void TelaModifyStructureAlterar(TpUnidade *L, TpArquivo *arqs, int pos)
+{
+	Moldura(1,1, 120,30, 7, 7);
+	gotoxy(40,3), printf("====================================");
+	gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
+	gotoxy(40,7), printf("====================================");
+
+	gotoxy(6,10),printf ("Field Name");
+	gotoxy(20,10), printf ("Type");
+	gotoxy(34,10), printf("Width");
+	gotoxy(46,10), printf ("Dec");
+	gotoxy(6,12), printf ("===========================================");
+
+	TpCampos *campos;
+	campos = arqs->campos;
+	int i = 0;
+	while(campos != NULL && i < pos - 1)
+	{
+		campos = campos->prox;
+		i++;
+	}
+	if (campos != NULL)
+	{
+		gotoxy(4, 14), printf("%d", pos);
+		gotoxy(6, 14), printf ("%s", campos->fieldName);
+		gotoxy(20, 14), printf ("%c", campos->type);
+		gotoxy(34, 14), printf ("%d", campos->width);
+		gotoxy(46, 14), printf ("%d", campos->dec);
+		
+	}
+	gotoxy(6,27), textcolor(7),printf("-----------------------------------------------------------------");
+	gotoxy(6,28), textcolor(7),printf ("MODIFY STRUCTURE\t\t||<%s>||%s", L->und, arqs->nomeDBF);
+	gotoxy(6,29), textcolor(7),printf("-----------------------------------------------------------------");
 	
 }
 void alimentarUnidade(TpUnidade **L)
@@ -1575,11 +1650,15 @@ void deleteALL(TpUnidade *L, TpArquivo *arqs, int *pos)
 		status = status->prox;
 		
 	}
-	*pos = 0;
 	clrscr();
-	TelaDeleteALL(L, arqs, deletados);
+	if (deletados > 0)
+	{
+		TelaDeleteALL(L, arqs, deletados);
+		*pos = 0;
+	}
+	else
+		TelaDeleteALL(L, arqs, deletados);
 	getch();
-	
 }
 void recall(TpUnidade *L, TpArquivo *arqs, int pos)
 {
@@ -1630,18 +1709,19 @@ void recallALL(TpUnidade *L, TpArquivo *arqs, int *pos)
 	getch();
 	
 }
-void pack(TpUnidade *L, TpArquivo **arqs)
+void pack(TpUnidade *L, TpArquivo **arqs, int *reg)
 {
 	TpStatus *status, *antStatus, *aux;
 	TpCampos *campos;
 	pDados *p, *ant;
-	int i, pos = 0;
+	int i, pos = 0, excluidos = 0;
 	status = (*arqs)->status;
 	while(status != NULL)
 	{
 		
 		if (status->status == 0)
 		{
+			excluidos++;
 			campos = (*arqs)->campos;
 			while(campos != NULL)
 			{
@@ -1692,22 +1772,245 @@ void pack(TpUnidade *L, TpArquivo **arqs)
 		}
 		else
 		{
-			antStatus = status; // para n�o pegar lixo	
+			antStatus = status; 	
 			pos++; // so incrementa se n deletar
 		}
 		
 		status = status->prox;
-		
-		
-		
-		
-		
 	
 	}
+	clrscr();
+	if (excluidos > 0)
+	{
+		TelaPack(L, *arqs, excluidos);
+		*reg = 0;
+		
+	}
+	else
+		TelaPack(L, *arqs, excluidos);
+	
+	getch();
 	
 	
+}
+void zap(TpUnidade *L, TpArquivo **arqs, int *reg)
+{
+	TpStatus *status;
+	TpCampos *campos;
+	pDados *p;
+	int excluidos = 0;
+	while((*arqs)->status != NULL)
+	{
+		excluidos++;
+		campos = (*arqs)->campos;
+		while(campos != NULL)
+		{
+			p = campos->pAtual;
+			campos->pAtual = campos->pAtual->prox;
+			free(p);
+			
+			campos = campos->prox;
+		}
+		status = (*arqs)->status;
+		(*arqs)->status = (*arqs)->status->prox;
+		free(status);
+		
+	}
+	clrscr();
+	if(excluidos > 0)
+	{
+		TelaZap(L, *arqs, excluidos);
+		*reg = 0;
+	}
+	else
+		TelaZap(L, *arqs, excluidos);
+	getch();
+}
+void modifyStructure(TpUnidade *L, TpArquivo **arqs, char letra)
+{
 	
+	int pos = 0;
+	if (letra == 'A' || letra == 'a')
+	{
+		clrscr();
+		TelaModifyStructure(L, *arqs, &pos);
+		TpCampos *auxCampos, *antCampos, *NCCampo;
+		int j, width, dec;
+		char type, fieldname[50];
+		gotoxy(59,26), printf("ENTER - SAIR");
+		gotoxy(4, 14 + pos), printf("%d", pos + 1);
+		fflush(stdin);
+		gotoxy(6, 14+pos), gets(fieldname);
+		while(strcmp(fieldname, "") != 0)
+		{
+			
+			fflush(stdin);
+			gotoxy(20, 14+pos), scanf ("%c", &type);
+			gotoxy(34, 14+pos), scanf ("%d", &width);
+			gotoxy(46, 14+pos), scanf("%d", &dec);		
+			
+			j = 0;
+			while(fieldname[j] != '\0')
+			{
+				fieldname[j] = toupper(fieldname[j]);	
+				j++;
+			}
+			fieldname[j] = '\0';
+			type = toupper(type);
+			
+			auxCampos = (*arqs)->campos;
+			while(auxCampos != NULL && strcmp(auxCampos->fieldName, fieldname) != 0)
+				auxCampos = auxCampos->prox;
+			if (auxCampos == NULL && (type == 'C' || type == 'D' || type == 'L' || type == 'M' || type == 'N') && width > 0 && dec >= 0)
+			{
+				
+				NCCampo = CriaNoCampos(dec, width, fieldname, type);
+				if ((*arqs)->campos == NULL)
+				{
+					(*arqs)->campos = NCCampo;
+				}
+				else
+				{
+					auxCampos = (*arqs)->campos;
+					while(auxCampos != NULL) // insere no final
+					{
+						antCampos = auxCampos;
+						auxCampos = auxCampos->prox;
+						
+					}
+					antCampos->prox = NCCampo;
+					
+				}
+			
+			}
+			else
+			gotoxy(54,14+pos),printf("Dados Invalidos");
+			
+			pos++;
+			gotoxy(4, 14+ pos), printf("%d", pos + 1);
+			fflush(stdin);
+			gotoxy(6, 14+pos), gets(fieldname);
+		}
+		
+	}
+	else
+	if (letra == 'B' || letra == 'b')
+	{
+		
+		if ((*arqs)->campos != NULL)
+		{
+			clrscr();
+			int indice, i, width, dec, k;
+			char character1[25], character2[2], character3[6], character4[6], flag = 1;
+			TpCampos *auxCampos;
+			TelaModifyStructure(L, *arqs, &pos);
+			gotoxy(6, 26), printf("Enter the field index to modify:");
+			gotoxy(39, 26), scanf("%d", &indice);
+			TpCampos *campos;
+			campos = (*arqs)->campos;
+			i = 0;
+			while(campos != NULL && i < indice - 1)
+			{
+				campos = campos->prox;
+				i++;
+			}
+			if (campos != NULL && indice > 0)
+			{
+				clrscr();
+				TelaModifyStructureAlterar(L, *arqs, indice);
+				fflush(stdin);
+				gotoxy(6, 15), gets(character1);
+				if (strcmp(character1, "") != 0)
+				{
+					k = 0;
+					while(character1[k] != '\0')
+					{
+						character1[k] = toupper(character1[k]);	
+						k++;
+					}
+					auxCampos = (*arqs)->campos;
+					while(auxCampos != NULL && strcmp(auxCampos->fieldName, character1) != 0)
+						auxCampos = auxCampos->prox;
+					if (auxCampos != NULL) // encontrou
+						flag = 0;
+					
+				}
+				else
+				{
+					strcpy(character1, campos->fieldName);
+				}
+				fflush(stdin);
+				gotoxy(20, 15), gets(character2);
+				if (strcmp(character2, "") != 0)
+				{
+					character2[0] = toupper(character2[0]);
+					if (character2[0] != 'C' && character2[0] != 'D' && character2[0] != 'L' && character2[0] != 'M' && character2[0] != 'N')
+						flag = 0;
+				}
+				else
+				{
+					character2[0] = campos->type;
+				}
+				fflush(stdin);
+				gotoxy(34, 15), gets(character3);
+				if (strcmp(character3, "") != 0)
+				{
+					
+					width = atoi(character3);
+					if (width <= 0)
+						flag = 0;
+					
+				}
+				else
+				{
+					width = campos->width;
+				}
+				fflush(stdin);
+				gotoxy(46, 15), gets(character4);
+				if (strcmp(character4, "") != 0)
+				{
+					dec = atoi(character4);
+					if (dec < 0)
+						flag = 0;
+				}
+				else
+				{
+					dec = campos->dec;
+				}
+				if (flag == 1)
+				{
+					strcpy(campos->fieldName, character1);
+					campos->type = character2[0];
+					campos->width = width;
+					campos->dec = dec;
+				}
+				else
+				{
+					gotoxy(6, 16+pos), printf ("Dados Invalidos");
+					getch();
+				}
+			}
+			else
+			{
+				gotoxy(6,15+pos),printf ("Indice Informado Nao Encontrado");
+				getch();
+			}
+		}
+		else
+		{
+			gotoxy(6,13), printf("Nenhum Campo Para Alterar");
+			getch();
+		}
+		
+	}
+	else
+	{
+		gotoxy(6,13), printf("Opcao Invalida");
+		getch();
+	}
+		
 	
+
 	
 }
 void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, char *op, TpArquivo **arqs, int *reg, char *set)
@@ -2226,14 +2529,17 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			if (frase[i] == '\0')
 			{
 				if (*set == 0 && (*arqs) != NULL)
-					recallALL(*atual,*arqs, reg);
+					{
+						recallALL(*atual,*arqs, reg);	
+						
+					}
 				else
 					{
-						gotoxy(6,10), printf ("Illegal Command");
+						gotoxy(6,10), printf("Nenhum Arquivo Selecionado e/ou SET DELETED ON");
 						getch();
 					}
-					
 				flag = 1;
+				
 			}
 			
 			
@@ -2286,12 +2592,56 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 			if (frase[i] == '\0')
 			{
 				if ((*arqs) != NULL)
-					pack(*atual, arqs);
+					pack(*atual, arqs, reg);
 				else
 					{
 						gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
 						getch();
 					}
+					
+				flag = 1;
+			}
+			
+		}
+		else
+		if(strcmp(aux, "ZAP") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if ((*arqs) != NULL)
+					zap(*atual, arqs, reg);
+				else
+					{
+						gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
+						getch();
+					}
+					
+				flag = 1;
+			}
+			
+			
+		}
+		else
+		if(strcmp(aux, "MODIFY STRUCTURE") == 0)
+		{
+			i++;
+			if (frase[i] == '\0')
+			{
+				if ((*arqs) != NULL)
+				{
+					char letra;
+					gotoxy(6,10), printf ("Press [A] to Add New Fields");
+					gotoxy(6,11), printf("Press [B] to Modify Existing Fields");
+					fflush(stdin);
+					letra = getche();
+					modifyStructure(*atual, arqs, letra);
+				}	
+				else
+				{
+					gotoxy(6,10), printf ("Nenhum Arquivo Selecionado");
+					getch();
+				}
 					
 				flag = 1;
 			}
