@@ -17,7 +17,7 @@
 
 8) LIST: Lista todos os campos.
 
-9) CLEAR: Limpa a tela do ambiente do dBase. (Não implememtado)
+9) CLEAR: Limpa a tela do ambiente do dBase. (Não implementado)
 
 10) LOCATE: Localiza registro(s), informando o campo e o conteúdo a ser buscado.
 
