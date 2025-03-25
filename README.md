@@ -49,41 +49,48 @@
 
 <h4>Exemplos de algumas funcionalidades:</h4>
 
-Menu Principal
+<h3>Menu Principal</h3>
+
 
 ![Menu Principal](imagens/menuPrincipal.png)
 
-Create
+<h3>Create</h3>
 
 
 ![Create](imagens/create.png)
 
-Dir
+
+<h3>Dir</h3>
 
 
 ![Dir](imagens/dir.png)
 
-List Structure
+
+<h3>List Structure</h3>
 
 
 ![List Structure](imagens/listStructure.png)
 
-Append
+
+<h3>Append</h3>
 
 
 ![Append](imagens/append.png)
 
-List
+
+<h3>List</h3>
 
 
 ![List](imagens/list.png)
 
-List For
+
+<h3>List For</h3>
 
 
 ![List For](imagens/listfor.png)
 
-Sort
+
+<h3>Sort</h3>
 
 
 ![Sort](imagens/sort.png)
