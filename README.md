@@ -1,5 +1,6 @@
 # dBaseDinamico
 <h4>dBase com listas encadeadas dinâmicas em C. A partir da linha de comando digitada pelo usuário, é interpretado e validado sua sintaxe e seus respectivos parâmetros. Sua interface se assemelha ao dBase original (década de 80, 90) e conta com suas principais funcionalidades: </h4>
+
 1) SET DEFAULT TO:
 
 2) CREATE : Cria um novo arquivo .DBF
@@ -49,6 +50,7 @@
 <h4>Exemplos de algumas funcionalidades:</h4>
 
 Menu Principal
+
 ![Menu Principal](imagens/menuPrincipal.png)
 
 Create
