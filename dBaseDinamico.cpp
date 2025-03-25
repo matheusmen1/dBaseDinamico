@@ -772,8 +772,9 @@ void setDefaultTo(TpUnidade *L, char unidade[], TpUnidade **atual, TpArquivo **a
 void create(TpUnidade **L, char nomeDBF[50])
 {
 	
-	char fieldname[15], type;
-	int width, dec;
+	char character1[15],  character2[2],  character3[6],  character4[6];
+	char type, flag = '0';
+	int dec, width;
 	TpArquivo *NC, *aux, *ant;
 	TpCampos *NCCampo, *auxCampos, *antCampos;
 	aux = (*L)->arqs;
@@ -820,59 +821,99 @@ void create(TpUnidade **L, char nomeDBF[50])
 			
 			gotoxy(4, 14 + i), printf("%d", i + 1);
 			fflush(stdin);
-			gotoxy(6, 14), gets(fieldname);
-			while(strcmp(fieldname, "") != 0)
+			gotoxy(6, 14), gets(character1);
+			while(strcmp(character1, "") != 0)
 			{
-				
-				fflush(stdin);
-				gotoxy(20, 14+i), scanf ("%c", &type);
-				gotoxy(34, 14+i), scanf ("%d", &width);
-				gotoxy(46, 14+i), scanf("%d", &dec);		
-				
 				j = 0;
-				while(fieldname[j] != '\0')
+				while(character1[j] != '\0')
 				{
-					fieldname[j] = toupper(fieldname[j]);	
+					character1[j] = toupper(character1[j]);	
 					j++;
-				}
-				fieldname[j] = '\0';
-				type = toupper(type);
-				
+				} 
+				character1[j] = '\0';
 				auxCampos = aux->campos;
-				while(auxCampos != NULL && strcmp(auxCampos->fieldName, fieldname) != 0)
+				while(auxCampos != NULL && strcmp(auxCampos->fieldName, character1) != 0)
 					auxCampos = auxCampos->prox;
-				if (auxCampos == NULL && (type == 'C' || type == 'D' || type == 'L' || type == 'M' || type == 'N') && width > 0 && dec >= 0)
+				if (auxCampos == NULL) // campos nao existe, pode inserir
 				{
-					
-					NCCampo = CriaNoCampos(dec, width, fieldname, type);
-					if (aux->campos == NULL)
+					do
 					{
-						aux->campos = NCCampo;
-					}
-					else
-					{
-						auxCampos = aux->campos;
-						while(auxCampos != NULL) // insere no final
+						fflush(stdin);
+						gotoxy(20, 14+i), gets(character2);
+						fflush(stdin);
+						gotoxy(34, 14+i), gets(character3);
+						fflush(stdin);
+						gotoxy(46, 14+i), gets(character4);
+						
+						character2[0] = toupper(character2[0]);
+				
+						if (strcmp(character2, "") == 0 || strcmp(character3, "") == 0 || strcmp(character4, "") == 0)
 						{
-							antCampos = auxCampos;
-							auxCampos = auxCampos->prox;
+							gotoxy(54,14+i),printf("Campo(s) Nao Preenchido(s)");
+							getch();
+							gotoxy(54,14+i),printf("                               ");
+							gotoxy(20,14+i),printf("                               ");
+							gotoxy(34,14+i),printf("                               ");
+							gotoxy(46,14+i),printf("                               ");
+						}
+						else
+						if (character2[0] != 'C' && character2[0] != 'D' && character2[0] != 'L' && character2[0] != 'M' && character2[0] != 'N' || atoi(character3) <= 0 || atoi(character4) < 0)
+						{
+							gotoxy(54,14+i),printf("Dado(s) Invalido(s)");
+							getch();
+							gotoxy(54,14+i),printf("                               ");
+							gotoxy(20,14+i),printf("                               ");
+							gotoxy(34,14+i),printf("                               ");
+							gotoxy(46,14+i),printf("                               ");
+						}
+						else
+							flag = '1';
+						
+					}while(flag != '1'); // enqt nao atender aos requisitos
+					
+					
+					if (flag == '1')
+					{
+						width = atoi(character3);
+						dec = atoi(character4);
+					
+						NCCampo = CriaNoCampos(dec, width, character1, character2[0]);
+						if (aux->campos == NULL)
+						{
+							aux->campos = NCCampo;
+						}
+						else
+						{
+							auxCampos = aux->campos;
+							while(auxCampos != NULL) // insere no final
+							{
+								antCampos = auxCampos;
+								auxCampos = auxCampos->prox;
+								
+							}
+							antCampos->prox = NCCampo;
 							
 						}
-						antCampos->prox = NCCampo;
-						
+						i++; // mais um campo
+						gotoxy(4, 14+ i), printf("%d", i + 1);
+						flag = '0';
 					}
 					
 				}
 				else
 				{
-					gotoxy(54,14+i),printf("Dado(s) Invalido(s)");
-					
+					gotoxy(54,14+i),printf("Campo Ja Existente");
+					getch();
+					gotoxy(54,14+i),printf("                               ");
+					gotoxy(4,14+i),printf("                               ");
+					gotoxy(6,14+i),printf("                               ");
 				}
 				
-				i++;
-				gotoxy(4, 14+ i), printf("%d", i + 1);
+				
+				gotoxy(4, 14+ i), printf("%d", i + 1);	
 				fflush(stdin);
-				gotoxy(6, 14+i), gets(fieldname);
+				gotoxy(6, 14+i), gets(character1);
+			
 			}
 			
 		}
@@ -880,7 +921,7 @@ void create(TpUnidade **L, char nomeDBF[50])
 	}
 	else
 	{
-		gotoxy(4,10),printf ("Arquivo Ja Existente\n");
+		gotoxy(4,10),printf ("Arquivo Ja Existente");
 		getch();
 	}
 }
@@ -968,80 +1009,89 @@ void append(TpUnidade *L, TpArquivo **arqs)
 	char character[50], flag = 1;
 	int i = 0, k;
 	auxCampos = (*arqs)->campos;
-
-	while(auxCampos != NULL && flag != 0)
+	
+	fflush(stdin);
+	gotoxy(16, 10+i), gets(character);
+	while(auxCampos != NULL && strcmp(character, "") != 0)
 	{
 		NCDados = (pDados*)malloc(sizeof(pDados));
 		NCDados->prox = NULL;
-		
-		fflush(stdin);
-		gotoxy(16, 10+i), gets(character);
-		if (strcmp(character, "") != 0)
+	
+		k = 0;
+		while(character[k] != '\0')
 		{
-			k = 0;
-			while(character[k] != '\0')
-			{
-				character[k] = toupper(character[k]);	
-				k++;
-			}
-			character[k] = '\0';
-			
-			if (auxCampos->type == 'C')	// character	
-			{
-				strcpy(dados.valorC, character);
-				NCDados->dados = dados;
-				
-			}
-			else // numerical
-			if (auxCampos->type == 'N')
-			{
-				dados.valorN = atof(character);
-				NCDados->dados = dados;
-			}
-			else
-			if(auxCampos->type == 'M') //memo;
-			{
-				strcpy(dados.valorM, character);
-				NCDados->dados = dados;
-			}
-			else
-			if(auxCampos->type == 'D') // date
-			{
-				strcpy(dados.valorD, character);
-				NCDados->dados = dados;
-			}
-			else // logical
-			{
-				character[0] = toupper(character[0]);
-				dados.valorL = character[0]; 
-				NCDados->dados = dados;
-			
-			}
-			if(auxCampos->pAtual == NULL)
-			{
-				auxCampos->pdados = NCDados;
-				auxCampos->pAtual = NCDados;
-			}	
-			else
-			{
-				p = auxCampos->pAtual;
-				while(p != NULL)
-				{
-					ant = p;
-					p = p->prox;
-				}
-					
-				ant->prox = NCDados;
-			}	
+			character[k] = toupper(character[k]);	
+			k++;
+		}
+		character[k] = '\0';
+		
+		if (auxCampos->type == 'C')	// character	
+		{
+			strcpy(dados.valorC, character);
+			NCDados->dados = dados;
 			
 		}
+		else // numerical
+		if (auxCampos->type == 'N')
+		{
+			dados.valorN = atof(character);
+			NCDados->dados = dados;
+		}
 		else
-			flag = 0;
+		if(auxCampos->type == 'M') //memo;
+		{
+			strcpy(dados.valorM, character);
+			NCDados->dados = dados;
+		}
+		else
+		if(auxCampos->type == 'D') // date
+		{
+			strcpy(dados.valorD, character);
+			NCDados->dados = dados;
+		}
+		else // logical
+		{
+			character[0] = toupper(character[0]);
+			dados.valorL = character[0]; 
+			NCDados->dados = dados;
+		
+		}
+		if(auxCampos->pAtual == NULL)
+		{
+			auxCampos->pdados = NCDados;
+			auxCampos->pAtual = NCDados;
+		}	
+		else
+		{
+			p = auxCampos->pAtual;
+			while(p != NULL)
+			{
+				ant = p;
+				p = p->prox;
+			}
+				
+			ant->prox = NCDados;
+		}	
 		i++;
 		auxCampos = auxCampos->prox;
+		if(auxCampos != NULL)
+		{
+			do
+		    {
+		        fflush(stdin);
+		        gotoxy(16, 10 + i), gets(character);
+		
+		        if (strcmp(character, "") == 0)
+		        {
+		            gotoxy(30, 10 + i), printf("Campo Nao Preenchido");
+		            getch(); 
+		            gotoxy(30, 10 + i), printf("                      "); 
+		        }
+		    } while (strcmp(character, "") == 0);
+		}
 	}
-	
-	if (flag != 0)
+		
+	if (strcmp(character, "") != 0 )
 	{
 		NCStatus = CriaNoStatus(1);
 		if((*arqs)->status == NULL)
@@ -1754,7 +1804,6 @@ void zap(TpUnidade *L, TpArquivo **arqs, int *reg)
 }
 void modifyStructure(TpUnidade *L, TpArquivo **arqs, char letra)
 {
-	
 	int pos = 0;
 	if (letra == 'A' || letra == 'a')
 	{
@@ -1765,107 +1814,144 @@ void modifyStructure(TpUnidade *L, TpArquivo **arqs, char letra)
 		pDados *p, *NCDados, *ant;
 		TpDados dado;
 		int j, width, dec;
-		char type, fieldname[50];
+		char character1[15], character2[2], character3[6], character4[6], flag = '0';
 		gotoxy(59,26), printf("ENTER - SAIR");
+		
 		gotoxy(4, 14 + pos), printf("%d", pos + 1);
 		fflush(stdin);
-		gotoxy(6, 14+pos), gets(fieldname);
-		while(strcmp(fieldname, "") != 0)
+		gotoxy(6, 14+pos), gets(character1);
+		while(strcmp(character1, "") != 0)
 		{
-			
-			fflush(stdin);
-			gotoxy(20, 14+pos), scanf ("%c", &type);
-			gotoxy(34, 14+pos), scanf ("%d", &width);
-			gotoxy(46, 14+pos), scanf("%d", &dec);		
-			
 			j = 0;
-			while(fieldname[j] != '\0')
+			while(character1[j] != '\0')
 			{
-				fieldname[j] = toupper(fieldname[j]);	
+				character1[j] = toupper(character1[j]);	
 				j++;
-			}
-			fieldname[j] = '\0';
-			type = toupper(type);
-			
+			} 
+			character1[j] = '\0';
 			auxCampos = (*arqs)->campos;
-			while(auxCampos != NULL && strcmp(auxCampos->fieldName, fieldname) != 0)
+			while(auxCampos != NULL && strcmp(auxCampos->fieldName, character1) != 0)
 				auxCampos = auxCampos->prox;
-			if (auxCampos == NULL && (type == 'C' || type == 'D' || type == 'L' || type == 'M' || type == 'N') && width > 0 && dec >= 0)
+			if(auxCampos == NULL) // campo ainda nao existente
 			{
-				
-				NCCampo = CriaNoCampos(dec, width, fieldname, type);
-				if ((*arqs)->campos == NULL)
+				do
 				{
-					(*arqs)->campos = NCCampo;
-				}
-				else
-				{
-					auxCampos = (*arqs)->campos;
-					while(auxCampos != NULL) // insere no final
+					fflush(stdin);
+					gotoxy(20, 14+pos), gets(character2);
+					fflush(stdin);
+					gotoxy(34, 14+pos), gets(character3);
+					fflush(stdin);
+					gotoxy(46, 14+pos), gets(character4);
+					
+					character2[0] = toupper(character2[0]);
+			
+					if (strcmp(character2, "") == 0 || strcmp(character3, "") == 0 || strcmp(character4, "") == 0)
 					{
-						antCampos = auxCampos;
-						auxCampos = auxCampos->prox;
-						
+						gotoxy(54,14+pos),printf("Campo(s) Nao Preenchido(s)");
+						getch();
+						gotoxy(54,14+pos),printf("                               ");
+						gotoxy(20,14+pos),printf("                               ");
+						gotoxy(34,14+pos),printf("                               ");
+						gotoxy(46,14+pos),printf("                               ");
 					}
-					antCampos->prox = NCCampo;
-					if((*arqs)->status != NULL)
+					else
+					if (character2[0] != 'C' && character2[0] != 'D' && character2[0] != 'L' && character2[0] != 'M' && character2[0] != 'N' || atoi(character3) <= 0 || atoi(character4) < 0)
 					{
-						
-						status = (*arqs)->status;
-						while(status != NULL)
+						gotoxy(54,14+pos),printf("Dado(s) Invalido(s)");
+						getch();
+						gotoxy(54,14+pos),printf("                               ");
+						gotoxy(20,14+pos),printf("                               ");
+						gotoxy(34,14+pos),printf("                               ");
+						gotoxy(46,14+pos),printf("                               ");
+					}
+					else
+						flag = '1';
+					
+				}while(flag != '1');
+				
+				if(flag == '1')
+				{
+					width = atoi(character3);
+					dec = atoi(character4);
+					
+					NCCampo = CriaNoCampos(dec, width, character1, character2[0]);
+					if ((*arqs)->campos == NULL)
+					{
+						(*arqs)->campos = NCCampo;
+					}
+					else
+					{
+						auxCampos = (*arqs)->campos;
+						while(auxCampos != NULL) // insere no final
 						{
-							NCDados = (pDados*)malloc(sizeof(pDados));
-							NCDados->prox = NULL;
-							if (type == 'C')
-								strcpy(dado.valorC, "");
-							else
-							if(type == 'N')
-								dado.valorN = 0;
-							else
-							if(type == 'L')
-								dado.valorL = 'T';
-							else
-							if (type == 'M')
-								strcpy(dado.valorM, "");
-							else
-								strcpy(dado.valorD, "");
+							antCampos = auxCampos;
+							auxCampos = auxCampos->prox;
 							
-							NCDados->dados = dado;
-							if (antCampos->prox->pAtual == NULL)
+						}
+						antCampos->prox = NCCampo;
+						if((*arqs)->status != NULL)
+						{
+							
+							status = (*arqs)->status;
+							while(status != NULL)
 							{
-								antCampos->prox->pAtual = NCDados;
-								antCampos->prox->pdados = NCDados;
-							}
-							else
-							{
-								p = antCampos->prox->pAtual;
-								while(p != NULL)
-								{
-									ant = p;
-									p = p->prox;
+								NCDados = (pDados*)malloc(sizeof(pDados));
+								NCDados->prox = NULL;
+								if (character2[0] == 'C')
+									strcpy(dado.valorC, "");
+								else
+								if(character2[0] == 'N')
+									dado.valorN = 0;
+								else
+								if(character2[0] == 'L')
+									dado.valorL = 'T';
+								else
+								if (character2[0] == 'M')
+									strcpy(dado.valorM, "");
+								else
+									strcpy(dado.valorD, "");
 								
+								NCDados->dados = dado;
+								if (antCampos->prox->pAtual == NULL)
+								{
+									antCampos->prox->pAtual = NCDados;
+									antCampos->prox->pdados = NCDados;
 								}
-								ant->prox = NCDados;
+								else
+								{
+									p = antCampos->prox->pAtual;
+									while(p != NULL)
+									{
+										ant = p;
+										p = p->prox;
+									
+									}
+										ant->prox = NCDados;
+								}
+								
+								status = status->prox;
 							}
-							
-							status = status->prox;
 						}
 						
+						
 					}
-					// inserir vazio
-			
+					pos++;
+					flag = '0';
 				}
-			
 			}
 			else
-				gotoxy(54,14+pos),printf("Dado(s) Invalido(s)");
+			{
+				gotoxy(54,14+pos),printf("Campo Ja Existente");
+				getch();
+				gotoxy(54,14+pos),printf("                               ");
+				gotoxy(4,14+pos),printf("                               ");
+				gotoxy(6,14+pos),printf("                               ");
+			}
 			
-			pos++;
 			gotoxy(4, 14+ pos), printf("%d", pos + 1);
 			fflush(stdin);
-			gotoxy(6, 14+pos), gets(fieldname);
-		}
-		
+			gotoxy(6, 14+pos), gets(character1);
+		}	
 	}
 	else
 	if (letra == 'B' || letra == 'b')
@@ -1896,17 +1982,37 @@ void modifyStructure(TpUnidade *L, TpArquivo **arqs, char letra)
 				gotoxy(6, 15), gets(character1);
 				if (strcmp(character1, "") != 0)
 				{
-					k = 0;
-					while(character1[k] != '\0')
+					do
 					{
-						character1[k] = toupper(character1[k]);	
-						k++;
-					}
-					auxCampos = (*arqs)->campos;
-					while(auxCampos != NULL && strcmp(auxCampos->fieldName, character1) != 0)
-						auxCampos = auxCampos->prox;
-					if (auxCampos != NULL) // encontrou
 						flag = 0;
+						k = 0;
+						while(character1[k] != '\0')
+						{
+							character1[k] = toupper(character1[k]);	
+							k++;
+						}
+						character1[k] = '\0';
+						auxCampos = (*arqs)->campos;
+						while(auxCampos != NULL && strcmp(auxCampos->fieldName, character1) != 0)
+							auxCampos = auxCampos->prox;
+						if(auxCampos == NULL) // nao achou, portanto, sai do laco
+							flag = 1;
+						else
+						{
+							gotoxy(54,14+pos),printf("Campo Ja Existente");
+							getch();
+							gotoxy(54,14+pos),printf("                               ");
+							gotoxy(6,14+pos),printf("                               ");
+							
+							fflush(stdin);
+							gotoxy(6, 15), gets(character1);
+						
+						}
+						
+					}while(strcmp(character1,"") != 0 && flag != 1);
+					
+					if(flag == 0) // caso ele saia
+						strcpy(character1, campos->fieldName);	
 					
 				}
 				else
@@ -2075,7 +2181,7 @@ void sort(TpUnidade *L, TpArquivo *arqs, char set)
 		campos = campos->prox;
 	if (campos != NULL) // achou
 	{
-		char auxC[25], auxL;
+		char auxC[25], auxL, flag = 0;
 		float auxF;
 		int i = 0, j = 0;
 		p = campos->pAtual;
@@ -2086,7 +2192,38 @@ void sort(TpUnidade *L, TpArquivo *arqs, char set)
 			pAux = p->prox;
 			while(pAux != NULL)
 			{
-				if (strcmp(p->dados.valorC, pAux->dados.valorC) > 0 || strcmp(p->dados.valorM, pAux->dados.valorM) > 0 || strcmp(p->dados.valorD, pAux->dados.valorD) > 0  || p->dados.valorN > pAux->dados.valorN || p->dados.valorL > p->dados.valorL)
+				flag = 0;
+				if (campos->type == 'C')
+				{
+					if (strcmp(p->dados.valorC, pAux->dados.valorC) > 0)
+						flag = 1;
+					
+				}
+				else
+				if(campos->type == 'N')
+				{
+					if(p->dados.valorN > pAux->dados.valorN)
+						flag = 1;
+				}
+				else
+				if(campos->type == 'L')
+				{
+					if (p->dados.valorL > pAux->dados.valorL)
+						flag = 1;
+				}
+				else
+				if(campos->type == 'M')
+				{
+					if(strcmp(p->dados.valorM, pAux->dados.valorC) > 0)
+						flag = 1;
+				}
+				else
+				if(campos->type == 'D')
+				{
+					if(strcmp(p->dados.valorD, pAux->dados.valorD) > 0)
+						flag = 1;
+				}
+				if (flag == 1)
 				{ 
 					auxCampos = arqs->campos;
 					while(auxCampos != NULL)
@@ -2101,7 +2238,7 @@ void sort(TpUnidade *L, TpArquivo *arqs, char set)
 						if(pi != NULL)
 						{
 							k=0;
-							pj = auxCampos->pAtual->prox;
+							pj = auxCampos->pAtual;
 							while(pj != NULL && k < j)
 							{
 								pj = pj->prox;
@@ -2588,7 +2725,6 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 				flag = 1;
 			}
 			
-			
 		}
 		else
 		if(strcmp(aux, "DELETE ALL") == 0)
@@ -2735,7 +2871,7 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 					gotoxy(6,10), printf ("Press [A] to Add New Fields");
 					gotoxy(6,11), printf("Press [B] to Modify Existing Fields");
 					fflush(stdin);
-					letra = getche();
+					letra = getch();
 					modifyStructure(*atual, arqs, letra);
 				}	
 				else
@@ -2773,7 +2909,6 @@ void interpretarString(char frase[50], TpUnidade **Lista, TpUnidade **atual, cha
 		 	flag =0;
 		}
 		
-		
 		j++;
 		i++;
 	
@@ -2800,8 +2935,6 @@ void executar(void)
 	{	
 		clrscr();
 		Moldura(1,1, 120,30, 7, 7);
-		
-		//Moldura(45, 4, 67, 6, 15, 7);
 		gotoxy(40,3), printf("====================================");
 		gotoxy(50,5), textcolor(7),printf ("dBase Dinamico");
 		gotoxy(40,7), printf("====================================");
@@ -2844,7 +2977,6 @@ void executar(void)
 
 int main(void)
 {
-
 	executar();
 	return 0;
 }
