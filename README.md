@@ -24,3 +24,5 @@ dBase com listas encadeadas dinâmicas em C. A partir da linha de comando digita
 18) ZAP: Este comando exclui todos os registros do arquivo .DBF em uso.
 19) MODIFY STRUCTURE: Permite modificar a estrutura do arquivo .DBF (alterar os campos existentes ou criar novos).
 20) SORT: Ordena os dados em relação a algum campo especificado.
+
+![Menu Principal](imagens/menuPrincipal.png)
