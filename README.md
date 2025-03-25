@@ -1,5 +1,5 @@
 # dBaseDinamico
-<h1>dBase com listas encadeadas dinâmicas em C. A partir da linha de comando digitada pelo usuário, é interpretado e validado sua sintaxe e seus respectivos parâmetros. Sua interface se assemelha ao dBase original (década de 80, 90) e conta com suas principais funcionalidades: </h1>
+<h3>dBase com listas encadeadas dinâmicas em C. A partir da linha de comando digitada pelo usuário, é interpretado e validado sua sintaxe e seus respectivos parâmetros. Sua interface se assemelha ao dBase original (década de 80, 90) e conta com suas principais funcionalidades: </h3>
 1) SET DEFAULT TO:
 2) CREATE : Cria um novo arquivo .DBF
 3) DIR: para mostrar todos os arquivos .DBF criados na unidade atual.
@@ -25,7 +25,7 @@
 19) MODIFY STRUCTURE: Permite modificar a estrutura do arquivo .DBF (alterar os campos existentes ou criar novos).
 20) SORT: Ordena os dados em relação a algum campo especificado.
 
-<h1>Exemplos de algumas funcionalidades:</h1>
+<h4>Exemplos de algumas funcionalidades:</h4>
 
 Menu Principal
 ![Menu Principal](imagens/menuPrincipal.png)
